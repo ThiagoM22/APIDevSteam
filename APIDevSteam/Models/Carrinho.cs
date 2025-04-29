@@ -9,6 +9,5 @@
         public DateTime? DataFinalizacao { get; set; }
         public bool? Finalizado { get; set; }
         public decimal ValorTotal { get; set; }
-
     }
 }

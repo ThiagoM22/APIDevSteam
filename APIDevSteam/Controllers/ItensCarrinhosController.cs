@@ -5,18 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using APIDevSteam.Data;
+using APIDevSteamJau.Data;
+using APIDevSteamJau.Models;
 using APIDevSteam.Models;
 
-namespace APIDevSteam.Controllers
+namespace APIDevSteamJau.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ItensCarrinhosController : ControllerBase
     {
-        private readonly APIDevSteamContext _context;
+        private readonly APIContext _context;
 
-        public ItensCarrinhosController(APIDevSteamContext context)
+        public ItensCarrinhosController(APIContext context)
         {
             _context = context;
         }
@@ -84,16 +85,20 @@ namespace APIDevSteam.Controllers
             {
                 return NotFound("Carrinho não encontrado.");
             }
+
             // Verifica se o jogo existe
             var jogo = await _context.Jogos.FindAsync(itemCarrinho.JogoId);
             if (jogo == null)
             {
                 return NotFound("Jogo não encontrado.");
             }
-            //Calcula o valor total
+
+            // Calcula o valor total
             itemCarrinho.ValorTotal = itemCarrinho.Quantidade * jogo.Preco;
-            // Adiciona o item ao carrinho
+
+            // Adiciona o valor total ao carrinho
             carrinho.ValorTotal += itemCarrinho.ValorTotal;
+
             _context.ItensCarrinhos.Add(itemCarrinho);
             await _context.SaveChangesAsync();
 
@@ -108,6 +113,22 @@ namespace APIDevSteam.Controllers
             if (itemCarrinho == null)
             {
                 return NotFound();
+            }
+
+            // Verificar se o Carrinho existe
+            var carrinho = await _context.Carrinhos.FindAsync(itemCarrinho.CarrinhoId);
+            if (carrinho == null)
+            {
+                return NotFound("Carrinho não encontrado.");
+            }
+
+            // Remove o valor total do carrinho
+            carrinho.ValorTotal -= itemCarrinho.ValorTotal;
+
+            // Verifica se o valor total do carrinho é menor que zero
+            if (carrinho.ValorTotal < 0)
+            {
+                carrinho.ValorTotal = 0;
             }
 
             _context.ItensCarrinhos.Remove(itemCarrinho);
