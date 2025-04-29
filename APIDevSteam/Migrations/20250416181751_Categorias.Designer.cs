@@ -4,6 +4,7 @@ using APIDevSteam.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIDevSteam.Migrations
 {
     [DbContext(typeof(APIDevSteamContext))]
-    partial class APIDevSteamContextModelSnapshot : ModelSnapshot
+    [Migration("20250416181751_Categorias")]
+    partial class Categorias
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,37 +24,6 @@ namespace APIDevSteam.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("APIDevSteam.Models.Carrinho", b =>
-                {
-                    b.Property<Guid>("CarrinhoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DataFinalizacao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("Finalizado")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("UsuarioId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UsuarioId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("ValorTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("CarrinhoId");
-
-                    b.HasIndex("UsuarioId1");
-
-                    b.ToTable("Carrinhos", (string)null);
-                });
 
             modelBuilder.Entity("APIDevSteam.Models.Categoria", b =>
                 {
@@ -66,36 +38,6 @@ namespace APIDevSteam.Migrations
                     b.HasKey("CategoriaId");
 
                     b.ToTable("Categorias", (string)null);
-                });
-
-            modelBuilder.Entity("APIDevSteam.Models.ItemCarrinho", b =>
-                {
-                    b.Property<Guid>("ItemCarrinhoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CarrinhoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("JogoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("ValorTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("ValorUnitario")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ItemCarrinhoId");
-
-                    b.HasIndex("CarrinhoId");
-
-                    b.HasIndex("JogoId");
-
-                    b.ToTable("ItensCarrinhos", (string)null);
                 });
 
             modelBuilder.Entity("APIDevSteam.Models.Jogo", b =>
@@ -378,30 +320,6 @@ namespace APIDevSteam.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("APIDevSteam.Models.Carrinho", b =>
-                {
-                    b.HasOne("APIDevSteam.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId1");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("APIDevSteam.Models.ItemCarrinho", b =>
-                {
-                    b.HasOne("APIDevSteam.Models.Carrinho", "Carrinho")
-                        .WithMany()
-                        .HasForeignKey("CarrinhoId");
-
-                    b.HasOne("APIDevSteam.Models.Jogo", "Jogo")
-                        .WithMany()
-                        .HasForeignKey("JogoId");
-
-                    b.Navigation("Carrinho");
-
-                    b.Navigation("Jogo");
                 });
 
             modelBuilder.Entity("APIDevSteam.Models.JogoCategoria", b =>

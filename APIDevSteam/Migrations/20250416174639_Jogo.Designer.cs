@@ -4,6 +4,7 @@ using APIDevSteam.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIDevSteam.Migrations
 {
     [DbContext(typeof(APIDevSteamContext))]
-    partial class APIDevSteamContextModelSnapshot : ModelSnapshot
+    [Migration("20250416174639_Jogo")]
+    partial class Jogo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,98 +25,14 @@ namespace APIDevSteam.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("APIDevSteam.Models.Carrinho", b =>
-                {
-                    b.Property<Guid>("CarrinhoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DataFinalizacao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("Finalizado")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("UsuarioId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UsuarioId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("ValorTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("CarrinhoId");
-
-                    b.HasIndex("UsuarioId1");
-
-                    b.ToTable("Carrinhos", (string)null);
-                });
-
-            modelBuilder.Entity("APIDevSteam.Models.Categoria", b =>
-                {
-                    b.Property<Guid>("CategoriaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CategoriaName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CategoriaId");
-
-                    b.ToTable("Categorias", (string)null);
-                });
-
-            modelBuilder.Entity("APIDevSteam.Models.ItemCarrinho", b =>
-                {
-                    b.Property<Guid>("ItemCarrinhoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CarrinhoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("JogoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("ValorTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("ValorUnitario")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ItemCarrinhoId");
-
-                    b.HasIndex("CarrinhoId");
-
-                    b.HasIndex("JogoId");
-
-                    b.ToTable("ItensCarrinhos", (string)null);
-                });
-
             modelBuilder.Entity("APIDevSteam.Models.Jogo", b =>
                 {
                     b.Property<Guid?>("JogoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Banner")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Desconto")
                         .HasColumnType("int");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Preco")
                         .HasColumnType("decimal(18,2)");
@@ -129,51 +48,6 @@ namespace APIDevSteam.Migrations
                     b.HasKey("JogoId");
 
                     b.ToTable("Jogos", (string)null);
-                });
-
-            modelBuilder.Entity("APIDevSteam.Models.JogoCategoria", b =>
-                {
-                    b.Property<Guid>("JogoCategoriaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CategoriaId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("JogoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("JogoCategoriaId");
-
-                    b.HasIndex("CategoriaId");
-
-                    b.HasIndex("JogoId");
-
-                    b.ToTable("JogosCategorias", (string)null);
-                });
-
-            modelBuilder.Entity("APIDevSteam.Models.JogoMidia", b =>
-                {
-                    b.Property<Guid>("JogoMidiaId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("JogoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("JogoMidiaId");
-
-                    b.HasIndex("JogoId");
-
-                    b.ToTable("JogosMidias", (string)null);
                 });
 
             modelBuilder.Entity("APIDevSteam.Models.Usuario", b =>
@@ -378,60 +252,6 @@ namespace APIDevSteam.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("APIDevSteam.Models.Carrinho", b =>
-                {
-                    b.HasOne("APIDevSteam.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId1");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("APIDevSteam.Models.ItemCarrinho", b =>
-                {
-                    b.HasOne("APIDevSteam.Models.Carrinho", "Carrinho")
-                        .WithMany()
-                        .HasForeignKey("CarrinhoId");
-
-                    b.HasOne("APIDevSteam.Models.Jogo", "Jogo")
-                        .WithMany()
-                        .HasForeignKey("JogoId");
-
-                    b.Navigation("Carrinho");
-
-                    b.Navigation("Jogo");
-                });
-
-            modelBuilder.Entity("APIDevSteam.Models.JogoCategoria", b =>
-                {
-                    b.HasOne("APIDevSteam.Models.Categoria", "Categoria")
-                        .WithMany()
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("APIDevSteam.Models.Jogo", "Jogo")
-                        .WithMany()
-                        .HasForeignKey("JogoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Categoria");
-
-                    b.Navigation("Jogo");
-                });
-
-            modelBuilder.Entity("APIDevSteam.Models.JogoMidia", b =>
-                {
-                    b.HasOne("APIDevSteam.Models.Jogo", "Jogo")
-                        .WithMany()
-                        .HasForeignKey("JogoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Jogo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
