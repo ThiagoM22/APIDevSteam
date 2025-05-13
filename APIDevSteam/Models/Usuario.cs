@@ -7,7 +7,8 @@ namespace APIDevSteam.Models
         public Usuario() : base()
         {
         }
-        public string? NomeCompleto { get; set; }
+
+        public string NomeCompleto { get; set; }
         public DateOnly DataNascimento { get; set; }
     }
 }
